@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="ARCAD!AN GO — jedno miejsce, wiele światów.">
+  <title>ARCAD!AN GO</title>
+
+  <style>
+    :root {
+      --bg: #080808;
+      --panel: #141414;
+      --panel-hover: #202020;
+      --text: #f5f5f5;
+      --muted: #aaa3a3;
+      --red: #e52b38;
+      --red-bright: #ff414d;
+      --border: #302024;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--red-bright);
+      outline-offset: 3px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 18px 5%;
+      background: rgba(8, 8, 8, .96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      color: white;
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    .logo .red { color: var(--red); }
+
+    nav {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn, .secondary {
+      color: var(--text);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 10px 12px;
+    }
+
+    .nav-btn:hover, .secondary:hover {
+      border-color: var(--red);
+      background: #1b1112;
+    }
+
+    main {
+      width: min(1120px, 90%);
+      margin: auto;
+      padding: 35px 0 70px;
+      min-height: 75vh;
+    }
+
+    .hidden { display: none !important; }
+
+    .hero {
+      min-height: 340px;
+      padding: clamp(25px, 6vw, 65px);
+      border: 1px solid #4b1b20;
+      border-radius: 15px;
+      background:
+        radial-gradient(ellipse at 85% 15%, #48151b 0, transparent 38%),
+        linear-gradient(130deg, #191919, #0a0a0a 72%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .eyebrow {
+      color: var(--red-bright);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0;
+      font-size: clamp(42px, 8vw, 76px);
+      letter-spacing: -2.5px;
+      line-height: 1;
+    }
+
+    .red-text { color: var(--red-bright); }
+
+    .hero p, .intro {
+      max-width: 650px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .button {
+      color: white;
+      background: var(--red);
+      border: 1px solid var(--red);
+      border-radius: 7px;
+      padding: 12px 17px;
+      font-weight: bold;
+      transition: background .15s, transform .15s;
+    }
+
+    .button:hover {
+      background: #b91d29;
+      transform: translateY(-1px);
+    }
+
+    .section { margin-top: 45px; }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    h2 { margin: 0; font-size: 26px; }
+    h3 { margin: 0; }
+
+    .muted { color: var(--muted); line-height: 1.7; }
+
+    .departments {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+      margin-top: 22px;
+    }
+
+    .department {
+      min-height: 135px;
+      padding: 18px;
+      color: var(--text);
+      text-align: left;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--dept);
+      border-radius: 10px;
+      transition: background .15s, transform .15s;
+    }
+
+    .department:hover {
+      background: var(--panel-hover);
+      transform: translateY(-3px);
+    }
+
+    .symbol {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--dept);
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .department strong {
+      display: block;
+      font-size: 13px;
+      letter-spacing: .4px;
+    }
+
+    .department small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .card {
+      padding: 24px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+    }
+
+    .pulse-card {
+      border-left: 3px solid var(--red);
+      background: linear-gradient(110deg, #1b1011, #141414 65%);
+    }
+
+    .tag {
+      color: var(--red-bright);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .article-list {
+      display: grid;
+      gap: 13px;
+      margin-top: 20px;
+    }
+
+    .article-card {
+      padding: 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+    }
+
+    .article-card h3 { margin: 10px 0; }
+
+    .account-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr);
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .form-stack {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      margin-top: 7px;
+      padding: 12px;
+      color: white;
+      background: #090909;
+      border: 1px solid #393033;
+      border-radius: 7px;
+    }
+
+    input:focus { border-color: var(--red); }
+
+    .form-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    #status, #profileStatus {
+      min-height: 20px;
+      color: #ff777f;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-email { overflow-wrap: anywhere; }
+
+    footer {
+      padding: 25px 5%;
+      color: #8e8585;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+    }
+
+    @media (max-width: 760px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .departments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .account-layout { grid-template-columns: 1fr; }
+      main { width: 92%; padding-top: 23px; }
+    }
+
+    @media (max-width: 420px) {
+      .departments { grid-template-columns: 1fr; }
+      nav { width: 100%; }
+      .nav-btn { flex: 1; padding: 10px 7px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">ARCAD<span class="red">!</span>AN <span class="red">GO</span></div>
+
+    <nav aria-label="Nawigacja główna">
+      <button class="nav-btn" data-target="home">Główna</button>
+      <button class="nav-btn" data-target="departments">Działy</button>
+      <button class="nav-btn" data-target="pulse">PULSE</button>
+      <button class="nav-btn" data-target="account">Konto</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home">
+      <div class="hero">
+        <span class="eyebrow">One universe. Many worlds.</span>
+        <h1>One world.<br><span class="red-text">Endless stories.</span></h1>
+        <p>
+          Jedna platforma, wiele światów. Odkrywaj książki, filmy,
+          muzykę, gry, wydarzenia i popkulturę w ekosystemie ARCAD!AN.
+        </p>
+        <button class="button" data-target="departments">ODKRYJ ARCAD!AN</button>
+      </div>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Jeden ekosystem</h2>
+          <span class="tag">ARCAD!AN UNIVERSE</span>
+        </div>
+        <p class="intro">
+          ARCAD!AN GO to wspólna brama do wszystkich działów marki.
+          Każdy dział ma własną specjalizację, a całość łączy jeden
+          interfejs i wspólna tożsamość wizualna.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Poznaj PULSE</h2>
+          <span class="tag">FIRST TO EXPLORE</span>
+        </div>
+        <div class="card pulse-card">
+          <h3>ARCAD!AN PULSE</h3>
+          <p class="muted">
+            Popkultura bez powierzchownych ocen: recenzje, rankingi,
+            analizy i dyskusje o filmach, serialach, książkach oraz grach.
+          </p>
+          <button class="button" data-target="pulse">WEJDŹ DO PULSE</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Odkryj nasze działy</h2>
+          <button class="secondary" data-target="departments">Zobacz wszystkie</button>
+        </div>
+        <div id="homeDepartments" class="departments"></div>
+      </section>
+    </section>
+
+    <section id="departments" class="section hidden">
+      <span class="eyebrow">Explore the universe</span>
+      <h2 style="margin-top:12px">15 działów. Jeden świat.</h2>
+      <p class="intro">
+        Wybierz dział, aby poznać jego specjalizację.
+        Funkcje będą uruchamiane etapami, gdy przygotujemy konkretne treści.
+      </p>
+      <div id="departmentGrid" class="departments"></div>
+      <div id="departmentDetails" class="card hidden" style="margin-top:20px">
+        <span class="eyebrow">ARCAD!AN UNIVERSE</span>
+        <h3 id="detailTitle" style="margin-top:12px"></h3>
+        <p id="detailDescription" class="muted"></p>
+        <p class="muted">Kolejne funkcje tego działu będą dodawane stopniowo.</p>
+        <button class="secondary" data-target="departments">Wróć do działów</button>
+      </div>
+    </section>
+
+    <section id="pulse" class="section hidden">
+      <span class="eyebrow">ARCAD!AN PULSE</span>
+      <h2 style="margin-top:12px">Popkultura pod lupą.</h2>
+      <p class="intro">
+        Recenzje, rankingi, analizy i dyskusje. PULSE będzie pierwszym
+        aktywnie rozwijanym działem ARCAD!AN.
+      </p>
+
+      <div class="article-list">
+        <article class="article-card">
+          <span class="tag">PULSE REVIEW</span>
+          <h3>Pierwsze recenzje</h3>
+          <p class="muted">
+            To miejsce na Twoje autorskie recenzje filmów, seriali,
+            książek i gier. Opublikujemy je po przygotowaniu tekstów.
+          </p>
+        </article>
+
+        <article class="article-card">
+          <span class="tag">PULSE RANKED</span>
+          <h3>Rankingi i zestawienia</h3>
+          <p class="muted">
+            Zestawienia, które nie tylko wskazują zwycięzców, ale
+            wyjaśniają, dlaczego dane dzieła zasługują na uwagę.
+          </p>
+        </article>
+
+        <article class="article-card">
+          <span class="tag">PULSE DEBATE</span>
+          <h3>Tematy do dyskusji</h3>
+          <p class="muted">
+            Pytania i opinie, które pozwolą czytelnikom spojrzeć
+            na popkulturę z różnych perspektyw.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="account" class="section hidden">
+      <span class="eyebrow">Your ARCAD!AN ID</span>
+      <h2 style="margin-top:12px">Twoje konto</h2>
+      <p class="intro">
+        Zarejestruj się lub zaloguj. Na tym etapie konto obsługuje
+        uwierzytelnianie e-mail i hasłem przez Supabase.
+      </p>
+
+      <div class="account-layout">
+        <div class="card">
+          <div id="authForms">
+            <h3>ARCAD!AN ID</h3>
+            <div class="form-stack">
+              <label>
+                Adres e-mail
+                <input id="email" type="email" autocomplete="email"
+                  placeholder="twoj@email.com">
+              </label>
+
+              <label>
+                Hasło
+                <input id="password" type="password" minlength="8"
+                  autocomplete="current-password" placeholder="Minimum 8 znaków">
+              </label>
+
+              <div class="form-actions">
+                <button id="signupBtn" class="button">Utwórz konto</button>
+                <button id="loginBtn" class="secondary">Zaloguj się</button>
+              </div>
+
+              <p id="status" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div id="signedIn" class="hidden">
+            <h3>Witaj w ARCAD!AN GO</h3>
+            <p class="muted">Zalogowane konto:</p>
+            <p id="profileEmail" class="profile-email"></p>
+            <button id="logoutBtn" class="button">Wyloguj się</button>
+            <p id="profileStatus" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <aside class="card">
+          <h3>Twoja przestrzeń</h3>
+          <p class="muted">
+            W kolejnych wersjach chcemy dodać zapisane artykuły,
+            ulubione treści, historię i preferencje użytkownika.
+          </p>
+          <p class="muted">
+            Nie podawaj w profilu danych wrażliwych. Na razie nie
+            zbieramy dodatkowych danych poza informacjami wymaganymi
+            do logowania.
+          </p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>ARCAD!AN GO · ONE UNIVERSE. MANY WORLDS.</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // WSTAW WŁASNE WARTOŚCI Z SUPABASE.
+    const SUPABASE_URL = "https://foblyiojofcmcxvgitoh.supabase.co/rest/v1/";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2kRas_WKlTjwBtkMdO3zyQ_4w50Coo5";
+
+    // Kolory działów są odrębne od czerwonego motywu głównej aplikacji.
+    const departments = [
+      { name: "MOTION", symbol: "◉", color: "#c9a0dc", desc: "Filmy, seriale, animacja i produkcja audiowizualna." },
+      { name: "INK", symbol: "◎", color: "#edcf45", desc: "Wydawnictwo i świat książek." },
+      { name: "GALLERY", symbol: "⚿", color: "#f29b38", desc: "Sklep i produkty ARCAD!AN." },
+      { name: "SIGNAL", symbol: "⌁", color: "#53b86c", desc: "Telewizja i programy na żywo." },
+      { name: "WAVE", symbol: "≋", color: "#55c6d9", desc: "Radio, audycje i podcasty." },
+      { name: "ARCAD!AN+", symbol: "➤", color: "#e77b9a", desc: "Platforma streamingowa." },
+      { name: "FORGE", symbol: "⚒", color: "#b8b8b8", desc: "Gry i interaktywna rozrywka." },
+      { name: "JUNIOR", symbol: "☆", color: "#f4a6c8", desc: "Treści dla młodszych odbiorców." },
+      { name: "VAULT", symbol: "⬡", color: "#b79a70", desc: "Limitowane kolekcje i wyjątkowe wydania." },
+      { name: "PEOPLE", symbol: "⟷", color: "#648ee8", desc: "Ludzie, współpraca i rozwój zespołu." },
+      { name: "ECHO", symbol: "◉", color: "#9c9cdd", desc: "Muzyka i projekty dźwiękowe." },
+      { name: "STAGE", symbol: "♧", color: "#df755d", desc: "Teatr i rozrywka na żywo." },
+      { name: "PULSE", symbol: "!", color: "#edcf45", desc: "Magazyn o popkulturze, recenzje i analizy." },
+      { name: "GATHERING", symbol: "✥", color: "#80b8a4", desc: "Konwenty, festiwale i wydarzenia." },
+      { name: "PLAY", symbol: "▷", color: "#e9a34f", desc: "Gameplaye, quizy, wyzwania i materiały twórców." }
+    ];
+
+    function createDepartmentCard(dept) {
+      const card = document.createElement("button");
+      card.className = "department";
+      card.style.setProperty("--dept", dept.color);
+
+      const symbol = document.createElement("span");
+      symbol.className = "symbol";
+      symbol.setAttribute("aria-hidden", "true");
+      symbol.textContent = dept.symbol;
+
+      const name = document.createElement("strong");
+      name.textContent = "ARCAD!AN " + dept.name;
+
+      const description = document.createElement("small");
+      description.textContent = dept.desc;
+
+      card.append(symbol, name, description);
+
+      card.addEventListener("click", () => {
+        document.getElementById("detailTitle").textContent = "ARCAD!AN " + dept.name;
+        document.getElementById("detailDescription").textContent = dept.desc;
+        document.getElementById("departmentDetails").classList.remove("hidden");
+        document.getElementById("departmentDetails").scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
+      });
+
+      return card;
+    }
+
+    const departmentGrid = document.getElementById("departmentGrid");
+    const homeDepartments = document.getElementById("homeDepartments");
+
+    departments.forEach((dept, index) => {
+      departmentGrid.appendChild(createDepartmentCard(dept));
+
+      if (index < 3) {
+        homeDepartments.appendChild(createDepartmentCard(dept));
+      }
+    });
+
+    function showSection(id) {
+      ["home", "departments", "pulse", "account"].forEach((sectionId) => {
+        document.getElementById(sectionId).classList.toggle("hidden", sectionId !== id);
+      });
+
+      if (id !== "departments") {
+        document.getElementById("departmentDetails").classList.add("hidden");
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelectorAll("[data-target]").forEach((button) => {
+      button.addEventListener("click", () => showSection(button.dataset.target));
+    });
+
+    const status = document.getElementById("status");
+    const authForms = document.getElementById("authForms");
+    const signedIn = document.getElementById("signedIn");
+
+    function showStatus(message) {
+      status.textContent = message;
+    }
+
+    function displayUser(user) {
+      if (user) {
+        authForms.classList.add("hidden");
+        signedIn.classList.remove("hidden");
+        document.getElementById("profileEmail").textContent =
+          user.email || "Konto użytkownika";
+      } else {
+        signedIn.classList.add("hidden");
+        authForms.classList.remove("hidden");
+      }
+    }
+
+    const configReady =
+      SUPABASE_URL.startsWith("https://") &&
+      !SUPABASE_URL.includes("WKLEJ_TUTAJ") &&
+      SUPABASE_PUBLISHABLE_KEY.length > 20 &&
+      !SUPABASE_PUBLISHABLE_KEY.includes("WKLEJ_TUTAJ");
+
+    let supabaseClient = null;
+
+    if (!configReady) {
+      showStatus("Połącz aplikację z Supabase, wpisując Project URL i Publishable key w kodzie.");
+    } else if (!window.supabase) {
+      showStatus("Nie udało się załadować biblioteki. Sprawdź połączenie z internetem.");
+    } else {
+      supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+      supabaseClient.auth.getSession().then(({ data, error }) => {
+        if (error) {
+          showStatus("Nie udało się sprawdzić sesji. Odśwież stronę i spróbuj ponownie.");
+          return;
+        }
+        displayUser(data.session ? data.session.user : null);
+      });
+
+      supabaseClient.auth.onAuthStateChange((_event, session) => {
+        displayUser(session ? session.user : null);
+      });
+    }
+
+    async function getCredentials() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!supabaseClient) {
+        showStatus("Połączenie z Supabase nie jest jeszcze skonfigurowane.");
+        return null;
+      }
+
+      if (!email || !email.includes("@")) {
+        showStatus("Wpisz poprawny adres e-mail.");
+        return null;
+      }
+
+      if (password.length < 8) {
+        showStatus("Hasło musi mieć co najmniej 8 znaków.");
+        return null;
+      }
+
+      return { email, password };
+    }
+
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const credentials = await getCredentials();
+      if (!credentials) return;
+
+      showStatus("Tworzenie konta…");
+
+      const { data, error } = await supabaseClient.auth.signUp(credentials);
+
+      if (error) {
+        showStatus("Rejestracja nie powiodła się. Sprawdź ustawienia Supabase i spróbuj ponownie.");
+        return;
+      }
+
+      if (data.session) {
+        showStatus("Konto utworzone. Jesteś zalogowany.");
+      } else {
+        showStatus("Jeśli wymagane jest potwierdzenie e-maila, sprawdź swoją skrzynkę.");
+      }
+    });
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const credentials = await getCredentials();
+      if (!credentials) return;
+
+      showStatus("Logowanie…");
+
+      const { error } = await supabaseClient.auth.signInWithPassword(credentials);
+
+      if (error) {
+        showStatus("Logowanie nie powiodło się. Sprawdź dane i potwierdzenie e-maila.");
+      } else {
+        showStatus("Zalogowano pomyślnie.");
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      if (!supabaseClient) return;
+
+      const { error } = await supabaseClient.auth.signOut();
+
+      document.getElementById("profileStatus").textContent =
+        error ? "Nie udało się wylogować. Spróbuj ponownie." : "Wylogowano.";
+    });
+  </script>
+</body>
+</html>
