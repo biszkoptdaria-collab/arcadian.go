@@ -1,690 +1,784 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080808">
-  <meta name="description" content="ARCAD!AN GO — jedno miejsce, wiele światów.">
-  <title>ARCAD!AN GO</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCAD!AN GO</title>
 
-  <style>
-    :root {
-      --bg: #080808;
-      --panel: #141414;
-      --panel-hover: #202020;
-      --text: #f5f5f5;
-      --muted: #aaa3a3;
-      --red: #e52b38;
-      --red-bright: #ff414d;
-      --border: #302024;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    * { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #090909;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 
-    html { scroll-behavior: smooth; }
+button, input, select {
+  font: inherit;
+}
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-    }
+button {
+  cursor: pointer;
+}
 
-    button, input { font: inherit; }
-    button { cursor: pointer; }
+button:hover, a:hover, .nav-item:hover {
+  color: #ff2638;
+}
 
-    button:focus-visible, input:focus-visible {
-      outline: 2px solid var(--red-bright);
-      outline-offset: 3px;
-    }
+.hidden {
+  display: none !important;
+}
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding: 18px 5%;
-      background: rgba(8, 8, 8, .96);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-    }
+#auth {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 
-    .logo {
-      color: white;
-      font-size: 21px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      white-space: nowrap;
-    }
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 30px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 15px;
+}
 
-    .logo .red { color: var(--red); }
+.logo {
+  text-align: center;
+  font-size: 29px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
 
-    nav {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
+.red {
+  color: #ff2638;
+}
 
-    .nav-btn, .secondary {
-      color: var(--text);
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 10px 12px;
-    }
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
 
-    .nav-btn:hover, .secondary:hover {
-      border-color: var(--red);
-      background: #1b1112;
-    }
+button {
+  color: white;
+  background: #050505;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 11px 15px;
+}
 
-    main {
-      width: min(1120px, 90%);
-      margin: auto;
-      padding: 35px 0 70px;
-      min-height: 75vh;
-    }
+.tabs button {
+  flex: 1;
+}
 
-    .hidden { display: none !important; }
+.tabs button.active {
+  border-color: #ff2638;
+  color: #ff2638;
+}
 
-    .hero {
-      min-height: 340px;
-      padding: clamp(25px, 6vw, 65px);
-      border: 1px solid #4b1b20;
-      border-radius: 15px;
-      background:
-        radial-gradient(ellipse at 85% 15%, #48151b 0, transparent 38%),
-        linear-gradient(130deg, #191919, #0a0a0a 72%);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-    }
+label {
+  display: block;
+  margin: 15px 0;
+}
 
-    .eyebrow {
-      color: var(--red-bright);
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
+label span {
+  display: block;
+  margin-bottom: 7px;
+}
 
-    h1 {
-      margin: 18px 0;
-      font-size: clamp(42px, 8vw, 76px);
-      letter-spacing: -2.5px;
-      line-height: 1;
-    }
+input, select {
+  width: 100%;
+  padding: 12px;
+  color: white;
+  background: #080808;
+  border: 1px solid #383838;
+  border-radius: 8px;
+}
 
-    .red-text { color: var(--red-bright); }
+.primary {
+  width: 100%;
+  margin-top: 10px;
+}
 
-    .hero p, .intro {
-      max-width: 650px;
-      color: var(--muted);
-      line-height: 1.75;
-    }
+#authMessage {
+  margin-top: 15px;
+  color: #ff9ca5;
+  overflow-wrap: anywhere;
+}
 
-    .button {
-      color: white;
-      background: var(--red);
-      border: 1px solid var(--red);
-      border-radius: 7px;
-      padding: 12px 17px;
-      font-weight: bold;
-      transition: background .15s, transform .15s;
-    }
+header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 22px;
+  border-bottom: 1px solid #292929;
+  background: #0b0b0b;
+}
 
-    .button:hover {
-      background: #b91d29;
-      transform: translateY(-1px);
-    }
+header .logo {
+  margin: 0;
+  font-size: 22px;
+}
 
-    .section { margin-top: 45px; }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
+.header-right select {
+  width: auto;
+}
 
-    h2 { margin: 0; font-size: 26px; }
-    h3 { margin: 0; }
+.avatar-button {
+  font-size: 23px;
+  border-radius: 50%;
+}
 
-    .muted { color: var(--muted); line-height: 1.7; }
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 70px);
+}
 
-    .departments {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 13px;
-      margin-top: 22px;
-    }
+aside {
+  padding: 15px 10px;
+  border-right: 1px solid #292929;
+  background: #0d0d0d;
+}
 
-    .department {
-      min-height: 135px;
-      padding: 18px;
-      color: var(--text);
-      text-align: left;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-top: 3px solid var(--dept);
-      border-radius: 10px;
-      transition: background .15s, transform .15s;
-    }
+.nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 4px 0;
+  background: transparent;
+  border-color: transparent;
+}
 
-    .department:hover {
-      background: var(--panel-hover);
-      transform: translateY(-3px);
-    }
+main {
+  padding: 30px;
+  min-width: 0;
+}
 
-    .symbol {
-      display: block;
-      margin-bottom: 12px;
-      color: var(--dept);
-      font-size: 25px;
-      font-weight: bold;
-    }
+h1 {
+  font-size: clamp(27px, 4vw, 40px);
+}
 
-    .department strong {
-      display: block;
-      font-size: 13px;
-      letter-spacing: .4px;
-    }
+.muted {
+  color: #aaa;
+}
 
-    .department small {
-      display: block;
-      margin-top: 8px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 15px;
+  margin-top: 25px;
+}
 
-    .card {
-      padding: 24px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-    }
+.card {
+  min-height: 125px;
+  padding: 20px;
+  text-align: left;
+  background: #121212;
+  border: 1px solid #303030;
+  border-radius: 12px;
+}
 
-    .pulse-card {
-      border-left: 3px solid var(--red);
-      background: linear-gradient(110deg, #1b1011, #141414 65%);
-    }
+.card:hover {
+  border-color: #ff2638;
+}
 
-    .tag {
-      color: var(--red-bright);
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
+.card h3 {
+  margin: 10px 0 5px;
+}
 
-    .article-list {
-      display: grid;
-      gap: 13px;
-      margin-top: 20px;
-    }
+.card p {
+  color: #aaa;
+  margin-bottom: 0;
+  font-size: 13px;
+}
 
-    .article-card {
-      padding: 20px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-    }
+.avatar-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-    .article-card h3 { margin: 10px 0; }
+.avatar-options button {
+  font-size: 25px;
+}
 
-    .account-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr);
-      gap: 16px;
-      margin-top: 22px;
-    }
+.avatar-options button.selected {
+  border-color: #ff2638;
+}
 
-    .form-stack {
-      display: grid;
-      gap: 14px;
-      margin-top: 20px;
-    }
+@media (max-width: 700px) {
+  header {
+    padding: 0 12px;
+  }
 
-    label {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-    }
+  .layout {
+    grid-template-columns: 1fr;
+  }
 
-    input {
-      display: block;
-      width: 100%;
-      margin-top: 7px;
-      padding: 12px;
-      color: white;
-      background: #090909;
-      border: 1px solid #393033;
-      border-radius: 7px;
-    }
+  aside {
+    display: flex;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid #292929;
+  }
 
-    input:focus { border-color: var(--red); }
+  .nav-item {
+    width: auto;
+    flex-shrink: 0;
+  }
 
-    .form-actions {
-      display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-    }
-
-    #status, #profileStatus {
-      min-height: 20px;
-      color: #ff777f;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .profile-email { overflow-wrap: anywhere; }
-
-    footer {
-      padding: 25px 5%;
-      color: #8e8585;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 1.5px;
-    }
-
-    @media (max-width: 760px) {
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .departments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .account-layout { grid-template-columns: 1fr; }
-      main { width: 92%; padding-top: 23px; }
-    }
-
-    @media (max-width: 420px) {
-      .departments { grid-template-columns: 1fr; }
-      nav { width: 100%; }
-      .nav-btn { flex: 1; padding: 10px 7px; }
-    }
-  </style>
+  main {
+    padding: 20px 15px;
+  }
+}
+</style>
 </head>
 
 <body>
-  <header class="topbar">
-    <div class="logo">ARCAD<span class="red">!</span>AN <span class="red">GO</span></div>
 
-    <nav aria-label="Nawigacja główna">
-      <button class="nav-btn" data-target="home">Główna</button>
-      <button class="nav-btn" data-target="departments">Działy</button>
-      <button class="nav-btn" data-target="pulse">PULSE</button>
-      <button class="nav-btn" data-target="account">Konto</button>
-    </nav>
+<section id="auth">
+  <div class="auth-card">
+    <div class="logo">
+      ARCAD<span class="red">!</span>AN <span class="muted">GO</span>
+    </div>
+
+    <h2 id="authTitle">Witaj w ARCAD!AN GO</h2>
+    <p class="muted" id="authSubtitle">
+      Zaloguj się lub utwórz konto.
+    </p>
+
+    <div class="tabs">
+      <button id="loginTab" class="active" type="button">
+        Logowanie
+      </button>
+      <button id="signupTab" type="button">
+        Rejestracja
+      </button>
+    </div>
+
+    <form id="authForm">
+      <label>
+        <span>E-mail</span>
+        <input id="email" type="email" required
+               autocomplete="email" placeholder="adres@email.com">
+      </label>
+
+      <label>
+        <span>Hasło</span>
+        <input id="password" type="password" required
+               minlength="6" autocomplete="current-password"
+               placeholder="Minimum 6 znaków">
+      </label>
+
+      <label id="nameField" class="hidden">
+        <span>Nazwa wyświetlana</span>
+        <input id="displayName" type="text" maxlength="40">
+      </label>
+
+      <button id="submitButton" class="primary" type="submit">
+        Zaloguj się
+      </button>
+    </form>
+
+    <p id="authMessage" role="status"></p>
+  </div>
+</section>
+
+<section id="app" class="hidden">
+  <header>
+    <button id="homeLogo" class="logo"
+            style="border:0;background:transparent">
+      ARCAD<span class="red">!</span>AN GO
+    </button>
+
+    <div class="header-right">
+      <select id="language">
+        <option value="pl">🇵🇱 Polski</option>
+        <option value="en">🇬🇧 English</option>
+      </select>
+      <button id="profileButton" class="avatar-button">🦊</button>
+    </div>
   </header>
 
-  <main>
-    <section id="home">
-      <div class="hero">
-        <span class="eyebrow">One universe. Many worlds.</span>
-        <h1>One world.<br><span class="red-text">Endless stories.</span></h1>
-        <p>
-          Jedna platforma, wiele światów. Odkrywaj książki, filmy,
-          muzykę, gry, wydarzenia i popkulturę w ekosystemie ARCAD!AN.
-        </p>
-        <button class="button" data-target="departments">ODKRYJ ARCAD!AN</button>
+  <div class="layout">
+    <aside>
+      <button class="nav-item" data-page="home">⌂ Strona główna</button>
+      <button class="nav-item" data-page="divisions">▦ Wszystkie działy</button>
+      <button class="nav-item" data-page="pulse">❗ PULSE</button>
+      <button class="nav-item" data-page="saved">☆ Zapisane</button>
+      <button class="nav-item" data-page="profile">◉ Mój profil</button>
+      <button class="nav-item" data-page="settings">⚙ Ustawienia</button>
+      <button class="nav-item" id="logoutButton">↪ Wyloguj się</button>
+    </aside>
+
+    <main id="content"></main>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* WSTAW SWOJE DANE Z SUPABASE */
+const SUPABASE_URL = "https://foblyiojofcmcxvgitoh.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_2kRas_WKlTjwBtkMdO3zyQ_4w50Coo5";
+
+/* Nie używaj klucza service_role ani secret key. */
+
+const authView = document.getElementById("auth");
+const appView = document.getElementById("app");
+const message = document.getElementById("authMessage");
+
+let supabaseClient = null;
+let mode = "login";
+let user = null;
+let page = "home";
+let divisionName = "";
+let avatar = "🦊";
+let language = "pl";
+
+const divisions = [
+  ["MOTION", "🎬", "Filmy, seriale i animacja"],
+  ["INK", "🎯", "Wydawnictwo"],
+  ["GALLERY", "🗝️", "Sklep"],
+  ["SIGNAL", "📡", "Telewizja"],
+  ["WAVE", "〰️", "Radio"],
+  ["ARCAD!AN+", "🖱️", "Streaming"],
+  ["FORGE", "🎮", "Gry"],
+  ["JUNIOR", "🧸", "Treści dla dzieci"],
+  ["VAULT", "🔐", "Kolekcje limitowane"],
+  ["PEOPLE", "🧬", "Zespół"],
+  ["ECHO", "💿", "Muzyka"],
+  ["STAGE", "🎭", "Teatr i wydarzenia na żywo"],
+  ["PULSE", "❗", "Magazyn popkulturowy"],
+  ["GATHERING", "🎟️", "Konwenty i wydarzenia"],
+  ["PLAY", "➕", "Filmy, recenzje i gameplaye"]
+];
+
+function ready() {
+  return window.supabase &&
+    SUPABASE_URL.startsWith("https://") &&
+    !SUPABASE_URL.includes("WKLEJ_TUTAJ") &&
+    SUPABASE_KEY.length > 15 &&
+    !SUPABASE_KEY.includes("WKLEJ_TUTAJ");
+}
+
+function showMessage(text) {
+  message.textContent = text;
+}
+
+function switchMode(nextMode) {
+  mode = nextMode;
+  message.textContent = "";
+
+  const signup = mode === "signup";
+
+  document.getElementById("loginTab").classList.toggle(
+    "active", !signup
+  );
+  document.getElementById("signupTab").classList.toggle(
+    "active", signup
+  );
+
+  document.getElementById("nameField").classList.toggle(
+    "hidden", !signup
+  );
+  document.getElementById("displayName").required = signup;
+
+  document.getElementById("submitButton").textContent =
+    signup ? "Utwórz konto" : "Zaloguj się";
+
+  document.getElementById("password").autocomplete =
+    signup ? "new-password" : "current-password";
+
+  document.getElementById("authTitle").textContent =
+    signup ? "Dołącz do ARCAD!AN GO" : "Witaj w ARCAD!AN GO";
+
+  document.getElementById("authSubtitle").textContent =
+    signup ? "Utwórz swoje konto." : "Zaloguj się, aby kontynuować.";
+}
+
+function showAuth() {
+  authView.classList.remove("hidden");
+  appView.classList.add("hidden");
+}
+
+function showApp() {
+  if (!user) {
+    showAuth();
+    return;
+  }
+
+  authView.classList.add("hidden");
+  appView.classList.remove("hidden");
+  avatar = user.user_metadata?.avatar || avatar;
+  document.getElementById("profileButton").textContent = avatar;
+  renderPage(page);
+}
+
+function friendlyError(error) {
+  const text = error?.message || String(error);
+
+  if (text.toLowerCase().includes("invalid login credentials")) {
+    return "Nieprawidłowy e-mail lub hasło.";
+  }
+
+  if (text.toLowerCase().includes("user already registered")) {
+    return "To konto już istnieje. Spróbuj się zalogować.";
+  }
+
+  if (text.toLowerCase().includes("email not confirmed")) {
+    return "Potwierdź adres e-mail, klikając link w wiadomości.";
+  }
+
+  if (text.toLowerCase().includes("failed to fetch")) {
+    return "Brak połączenia z Supabase. Sprawdź Project URL.";
+  }
+
+  return "Błąd Supabase: " + text;
+}
+
+document.getElementById("loginTab").addEventListener(
+  "click", () => switchMode("login")
+);
+
+document.getElementById("signupTab").addEventListener(
+  "click", () => switchMode("signup")
+);
+
+document.getElementById("authForm").addEventListener(
+  "submit", async function(event) {
+    event.preventDefault();
+    message.textContent = "";
+
+    if (!ready() || !supabaseClient) {
+      showMessage(
+        "Najpierw uzupełnij SUPABASE_URL i SUPABASE_KEY w kodzie."
+      );
+      return;
+    }
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const displayName =
+      document.getElementById("displayName").value.trim();
+    const button = document.getElementById("submitButton");
+
+    if (mode === "signup" && !displayName) {
+      showMessage("Wpisz nazwę wyświetlaną.");
+      return;
+    }
+
+    button.disabled = true;
+
+    try {
+      let result;
+
+      if (mode === "signup") {
+        result = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              display_name: displayName,
+              avatar: avatar
+            },
+            emailRedirectTo:
+              window.location.origin + window.location.pathname
+          }
+        });
+
+        if (result.error) throw result.error;
+
+        if (result.data.session) {
+          user = result.data.user;
+          showApp();
+        } else {
+          showMessage(
+            "Konto utworzone. Jeśli wymagane jest potwierdzenie e-maila, sprawdź swoją skrzynkę."
+          );
+          switchMode("login");
+        }
+      } else {
+        result = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (result.error) throw result.error;
+
+        user = result.data.user;
+        showApp();
+      }
+    } catch (error) {
+      showMessage(friendlyError(error));
+    } finally {
+      button.disabled = false;
+      button.textContent =
+        mode === "signup" ? "Utwórz konto" : "Zaloguj się";
+    }
+  }
+);
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+function renderCards() {
+  return divisions.map(([name, icon, description]) => `
+    <button class="card" data-division="${escapeHTML(name)}">
+      <div style="font-size:25px">${icon}</div>
+      <h3>${escapeHTML(name)}</h3>
+      <p>${escapeHTML(description)}</p>
+    </button>
+  `).join("");
+}
+
+function renderPage(nextPage) {
+  page = nextPage;
+  const content = document.getElementById("content");
+  const name = user.user_metadata?.display_name ||
+    user.email.split("@")[0];
+
+  if (page === "home") {
+    content.innerHTML = `
+      <p class="red">ARCAD!AN UNIVERSE</p>
+      <h1>Witaj, <span class="red">${escapeHTML(name)}</span></h1>
+      <p class="muted">Twoje centrum ARCAD!AN GO.</p>
+      <h2>Odkryj nasze działy</h2>
+      <div class="cards">${renderCards()}</div>
+    `;
+  } else if (page === "divisions") {
+    content.innerHTML = `
+      <h1>Wszystkie działy</h1>
+      <p class="muted">Wybierz przestrzeń, którą chcesz odwiedzić.</p>
+      <div class="cards">${renderCards()}</div>
+    `;
+  } else if (page === "pulse") {
+    content.innerHTML = `
+      <h1>PULSE <span class="red">!</span></h1>
+      <p class="muted">Magazyn popkulturowy ARCAD!AN.</p>
+      <p>Treści tego działu pojawią się tutaj w przyszłości.</p>
+    `;
+  } else if (page === "saved") {
+    content.innerHTML = `
+      <h1>Zapisane</h1>
+      <p class="muted">Tutaj znajdziesz zapisane treści.</p>
+    `;
+  } else if (page === "profile") {
+    const currentAvatar = user.user_metadata?.avatar || avatar;
+
+    content.innerHTML = `
+      <h1>Mój profil</h1>
+      <p class="muted">${escapeHTML(user.email)}</p>
+      <label>
+        <span>Nazwa wyświetlana</span>
+        <input id="profileName" maxlength="40"
+          value="${escapeHTML(user.user_metadata?.display_name || "")}">
+      </label>
+      <h3>Wybierz avatar</h3>
+      <div class="avatar-options">
+        ${["🦊","🐺","🐈‍⬛","🐉","🦋","🐸","🦉","🐼","🦁","🐙","🦝","🐈"]
+          .map(a => `<button type="button" data-avatar="${a}"
+            class="${a === currentAvatar ? "selected" : ""}">${a}</button>`)
+          .join("")}
       </div>
+      <button id="saveProfile" style="margin-top:20px">Zapisz profil</button>
+      <p id="profileMessage" class="muted"></p>
+    `;
 
-      <section class="section">
-        <div class="section-heading">
-          <h2>Jeden ekosystem</h2>
-          <span class="tag">ARCAD!AN UNIVERSE</span>
-        </div>
-        <p class="intro">
-          ARCAD!AN GO to wspólna brama do wszystkich działów marki.
-          Każdy dział ma własną specjalizację, a całość łączy jeden
-          interfejs i wspólna tożsamość wizualna.
-        </p>
-      </section>
-
-      <section class="section">
-        <div class="section-heading">
-          <h2>Poznaj PULSE</h2>
-          <span class="tag">FIRST TO EXPLORE</span>
-        </div>
-        <div class="card pulse-card">
-          <h3>ARCAD!AN PULSE</h3>
-          <p class="muted">
-            Popkultura bez powierzchownych ocen: recenzje, rankingi,
-            analizy i dyskusje o filmach, serialach, książkach oraz grach.
-          </p>
-          <button class="button" data-target="pulse">WEJDŹ DO PULSE</button>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-heading">
-          <h2>Odkryj nasze działy</h2>
-          <button class="secondary" data-target="departments">Zobacz wszystkie</button>
-        </div>
-        <div id="homeDepartments" class="departments"></div>
-      </section>
-    </section>
-
-    <section id="departments" class="section hidden">
-      <span class="eyebrow">Explore the universe</span>
-      <h2 style="margin-top:12px">15 działów. Jeden świat.</h2>
-      <p class="intro">
-        Wybierz dział, aby poznać jego specjalizację.
-        Funkcje będą uruchamiane etapami, gdy przygotujemy konkretne treści.
-      </p>
-      <div id="departmentGrid" class="departments"></div>
-      <div id="departmentDetails" class="card hidden" style="margin-top:20px">
-        <span class="eyebrow">ARCAD!AN UNIVERSE</span>
-        <h3 id="detailTitle" style="margin-top:12px"></h3>
-        <p id="detailDescription" class="muted"></p>
-        <p class="muted">Kolejne funkcje tego działu będą dodawane stopniowo.</p>
-        <button class="secondary" data-target="departments">Wróć do działów</button>
-      </div>
-    </section>
-
-    <section id="pulse" class="section hidden">
-      <span class="eyebrow">ARCAD!AN PULSE</span>
-      <h2 style="margin-top:12px">Popkultura pod lupą.</h2>
-      <p class="intro">
-        Recenzje, rankingi, analizy i dyskusje. PULSE będzie pierwszym
-        aktywnie rozwijanym działem ARCAD!AN.
-      </p>
-
-      <div class="article-list">
-        <article class="article-card">
-          <span class="tag">PULSE REVIEW</span>
-          <h3>Pierwsze recenzje</h3>
-          <p class="muted">
-            To miejsce na Twoje autorskie recenzje filmów, seriali,
-            książek i gier. Opublikujemy je po przygotowaniu tekstów.
-          </p>
-        </article>
-
-        <article class="article-card">
-          <span class="tag">PULSE RANKED</span>
-          <h3>Rankingi i zestawienia</h3>
-          <p class="muted">
-            Zestawienia, które nie tylko wskazują zwycięzców, ale
-            wyjaśniają, dlaczego dane dzieła zasługują na uwagę.
-          </p>
-        </article>
-
-        <article class="article-card">
-          <span class="tag">PULSE DEBATE</span>
-          <h3>Tematy do dyskusji</h3>
-          <p class="muted">
-            Pytania i opinie, które pozwolą czytelnikom spojrzeć
-            na popkulturę z różnych perspektyw.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section id="account" class="section hidden">
-      <span class="eyebrow">Your ARCAD!AN ID</span>
-      <h2 style="margin-top:12px">Twoje konto</h2>
-      <p class="intro">
-        Zarejestruj się lub zaloguj. Na tym etapie konto obsługuje
-        uwierzytelnianie e-mail i hasłem przez Supabase.
-      </p>
-
-      <div class="account-layout">
-        <div class="card">
-          <div id="authForms">
-            <h3>ARCAD!AN ID</h3>
-            <div class="form-stack">
-              <label>
-                Adres e-mail
-                <input id="email" type="email" autocomplete="email"
-                  placeholder="twoj@email.com">
-              </label>
-
-              <label>
-                Hasło
-                <input id="password" type="password" minlength="8"
-                  autocomplete="current-password" placeholder="Minimum 8 znaków">
-              </label>
-
-              <div class="form-actions">
-                <button id="signupBtn" class="button">Utwórz konto</button>
-                <button id="loginBtn" class="secondary">Zaloguj się</button>
-              </div>
-
-              <p id="status" role="status" aria-live="polite"></p>
-            </div>
-          </div>
-
-          <div id="signedIn" class="hidden">
-            <h3>Witaj w ARCAD!AN GO</h3>
-            <p class="muted">Zalogowane konto:</p>
-            <p id="profileEmail" class="profile-email"></p>
-            <button id="logoutBtn" class="button">Wyloguj się</button>
-            <p id="profileStatus" role="status" aria-live="polite"></p>
-          </div>
-        </div>
-
-        <aside class="card">
-          <h3>Twoja przestrzeń</h3>
-          <p class="muted">
-            W kolejnych wersjach chcemy dodać zapisane artykuły,
-            ulubione treści, historię i preferencje użytkownika.
-          </p>
-          <p class="muted">
-            Nie podawaj w profilu danych wrażliwych. Na razie nie
-            zbieramy dodatkowych danych poza informacjami wymaganymi
-            do logowania.
-          </p>
-        </aside>
-      </div>
-    </section>
-  </main>
-
-  <footer>ARCAD!AN GO · ONE UNIVERSE. MANY WORLDS.</footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    // WSTAW WŁASNE WARTOŚCI Z SUPABASE.
-    const SUPABASE_URL = "https://foblyiojofcmcxvgitoh.supabase.co/rest/v1/";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2kRas_WKlTjwBtkMdO3zyQ_4w50Coo5";
-
-    // Kolory działów są odrębne od czerwonego motywu głównej aplikacji.
-    const departments = [
-      { name: "MOTION", symbol: "◉", color: "#c9a0dc", desc: "Filmy, seriale, animacja i produkcja audiowizualna." },
-      { name: "INK", symbol: "◎", color: "#edcf45", desc: "Wydawnictwo i świat książek." },
-      { name: "GALLERY", symbol: "⚿", color: "#f29b38", desc: "Sklep i produkty ARCAD!AN." },
-      { name: "SIGNAL", symbol: "⌁", color: "#53b86c", desc: "Telewizja i programy na żywo." },
-      { name: "WAVE", symbol: "≋", color: "#55c6d9", desc: "Radio, audycje i podcasty." },
-      { name: "ARCAD!AN+", symbol: "➤", color: "#e77b9a", desc: "Platforma streamingowa." },
-      { name: "FORGE", symbol: "⚒", color: "#b8b8b8", desc: "Gry i interaktywna rozrywka." },
-      { name: "JUNIOR", symbol: "☆", color: "#f4a6c8", desc: "Treści dla młodszych odbiorców." },
-      { name: "VAULT", symbol: "⬡", color: "#b79a70", desc: "Limitowane kolekcje i wyjątkowe wydania." },
-      { name: "PEOPLE", symbol: "⟷", color: "#648ee8", desc: "Ludzie, współpraca i rozwój zespołu." },
-      { name: "ECHO", symbol: "◉", color: "#9c9cdd", desc: "Muzyka i projekty dźwiękowe." },
-      { name: "STAGE", symbol: "♧", color: "#df755d", desc: "Teatr i rozrywka na żywo." },
-      { name: "PULSE", symbol: "!", color: "#edcf45", desc: "Magazyn o popkulturze, recenzje i analizy." },
-      { name: "GATHERING", symbol: "✥", color: "#80b8a4", desc: "Konwenty, festiwale i wydarzenia." },
-      { name: "PLAY", symbol: "▷", color: "#e9a34f", desc: "Gameplaye, quizy, wyzwania i materiały twórców." }
-    ];
-
-    function createDepartmentCard(dept) {
-      const card = document.createElement("button");
-      card.className = "department";
-      card.style.setProperty("--dept", dept.color);
-
-      const symbol = document.createElement("span");
-      symbol.className = "symbol";
-      symbol.setAttribute("aria-hidden", "true");
-      symbol.textContent = dept.symbol;
-
-      const name = document.createElement("strong");
-      name.textContent = "ARCAD!AN " + dept.name;
-
-      const description = document.createElement("small");
-      description.textContent = dept.desc;
-
-      card.append(symbol, name, description);
-
-      card.addEventListener("click", () => {
-        document.getElementById("detailTitle").textContent = "ARCAD!AN " + dept.name;
-        document.getElementById("detailDescription").textContent = dept.desc;
-        document.getElementById("departmentDetails").classList.remove("hidden");
-        document.getElementById("departmentDetails").scrollIntoView({
-          behavior: "smooth",
-          block: "nearest"
+    content.querySelectorAll("[data-avatar]").forEach(button => {
+      button.addEventListener("click", () => {
+        avatar = button.dataset.avatar;
+        content.querySelectorAll("[data-avatar]").forEach(item => {
+          item.classList.toggle("selected", item === button);
         });
       });
+    });
 
-      return card;
-    }
+    document.getElementById("saveProfile").addEventListener(
+      "click", saveProfile
+    );
+  } else if (page === "settings") {
+    content.innerHTML = `
+      <h1>Ustawienia</h1>
+      <p class="muted">Język interfejsu</p>
+      <select id="settingsLanguage">
+        <option value="pl">Polski</option>
+        <option value="en">English</option>
+      </select>
+      <p class="muted" style="margin-top:20px">
+        Konto: ${escapeHTML(user.email)}
+      </p>
+    `;
 
-    const departmentGrid = document.getElementById("departmentGrid");
-    const homeDepartments = document.getElementById("homeDepartments");
+    document.getElementById("settingsLanguage").value = language;
+    document.getElementById("settingsLanguage").addEventListener(
+      "change", event => {
+        language = event.target.value;
+        renderPage("settings");
+      }
+    );
+  } else if (page === "division") {
+    const selected = divisions.find(item => item[0] === divisionName);
 
-    departments.forEach((dept, index) => {
-      departmentGrid.appendChild(createDepartmentCard(dept));
+    content.innerHTML = `
+      <button id="backToDivisions">← Wszystkie działy</button>
+      <h1 style="margin-top:25px">${selected ? selected[1] : ""} ${escapeHTML(divisionName)}</h1>
+      <p class="muted">${selected ? escapeHTML(selected[2]) : ""}</p>
+      <p>Ta przestrzeń jest przygotowana. Jej zawartość dodamy później.</p>
+    `;
 
-      if (index < 3) {
-        homeDepartments.appendChild(createDepartmentCard(dept));
+    document.getElementById("backToDivisions").addEventListener(
+      "click", () => renderPage("divisions")
+    );
+  }
+
+  content.querySelectorAll("[data-division]").forEach(button => {
+    button.addEventListener("click", () => {
+      divisionName = button.dataset.division;
+      renderPage("division");
+    });
+  });
+}
+
+async function saveProfile() {
+  const name = document.getElementById("profileName").value.trim();
+  const status = document.getElementById("profileMessage");
+
+  if (!name) {
+    status.textContent = "Wpisz nazwę wyświetlaną.";
+    return;
+  }
+
+  try {
+    const { data, error } = await supabaseClient.auth.updateUser({
+      data: {
+        ...user.user_metadata,
+        display_name: name,
+        avatar: avatar
       }
     });
 
-    function showSection(id) {
-      ["home", "departments", "pulse", "account"].forEach((sectionId) => {
-        document.getElementById(sectionId).classList.toggle("hidden", sectionId !== id);
+    if (error) throw error;
+
+    user = data.user;
+    document.getElementById("profileButton").textContent = avatar;
+    status.textContent = "Profil zapisany.";
+  } catch (error) {
+    status.textContent = friendlyError(error);
+  }
+}
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => renderPage(button.dataset.page));
+});
+
+document.getElementById("homeLogo").addEventListener(
+  "click", () => renderPage("home")
+);
+
+document.getElementById("profileButton").addEventListener(
+  "click", () => renderPage("profile")
+);
+
+document.getElementById("logoutButton").addEventListener(
+  "click", async () => {
+    if (!confirm("Czy na pewno chcesz się wylogować?")) return;
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+      alert(friendlyError(error));
+      return;
+    }
+
+    user = null;
+    showAuth();
+  }
+);
+
+document.getElementById("language").addEventListener(
+  "change", event => {
+    language = event.target.value;
+
+    if (language === "en") {
+      document.documentElement.lang = "en";
+      document.querySelectorAll("[data-page]").forEach((button, index) => {
+        const english = [
+          "⌂ Home", "▦ All divisions", "❗ PULSE",
+          "☆ Saved", "◉ My profile", "⚙ Settings", "↪ Log out"
+        ];
+        button.textContent = english[index] || button.textContent;
       });
-
-      if (id !== "departments") {
-        document.getElementById("departmentDetails").classList.add("hidden");
-      }
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    document.querySelectorAll("[data-target]").forEach((button) => {
-      button.addEventListener("click", () => showSection(button.dataset.target));
-    });
-
-    const status = document.getElementById("status");
-    const authForms = document.getElementById("authForms");
-    const signedIn = document.getElementById("signedIn");
-
-    function showStatus(message) {
-      status.textContent = message;
-    }
-
-    function displayUser(user) {
-      if (user) {
-        authForms.classList.add("hidden");
-        signedIn.classList.remove("hidden");
-        document.getElementById("profileEmail").textContent =
-          user.email || "Konto użytkownika";
-      } else {
-        signedIn.classList.add("hidden");
-        authForms.classList.remove("hidden");
-      }
-    }
-
-    const configReady =
-      SUPABASE_URL.startsWith("https://") &&
-      !SUPABASE_URL.includes("WKLEJ_TUTAJ") &&
-      SUPABASE_PUBLISHABLE_KEY.length > 20 &&
-      !SUPABASE_PUBLISHABLE_KEY.includes("WKLEJ_TUTAJ");
-
-    let supabaseClient = null;
-
-    if (!configReady) {
-      showStatus("Połącz aplikację z Supabase, wpisując Project URL i Publishable key w kodzie.");
-    } else if (!window.supabase) {
-      showStatus("Nie udało się załadować biblioteki. Sprawdź połączenie z internetem.");
     } else {
-      supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-      );
-
-      supabaseClient.auth.getSession().then(({ data, error }) => {
-        if (error) {
-          showStatus("Nie udało się sprawdzić sesji. Odśwież stronę i spróbuj ponownie.");
-          return;
+      document.documentElement.lang = "pl";
+      const polish = [
+        "⌂ Strona główna", "▦ Wszystkie działy", "❗ PULSE",
+        "☆ Zapisane", "◉ Mój profil", "⚙ Ustawienia", "↪ Wyloguj się"
+      ];
+      document.querySelectorAll("[data-page], #logoutButton").forEach(
+        (button, index) => {
+          button.textContent = polish[index] || button.textContent;
         }
-        displayUser(data.session ? data.session.user : null);
-      });
-
-      supabaseClient.auth.onAuthStateChange((_event, session) => {
-        displayUser(session ? session.user : null);
-      });
+      );
     }
 
-    async function getCredentials() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+    renderPage(page);
+  }
+);
 
-      if (!supabaseClient) {
-        showStatus("Połączenie z Supabase nie jest jeszcze skonfigurowane.");
-        return null;
-      }
+if (ready()) {
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL, SUPABASE_KEY
+  );
 
-      if (!email || !email.includes("@")) {
-        showStatus("Wpisz poprawny adres e-mail.");
-        return null;
-      }
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    user = session?.user || null;
 
-      if (password.length < 8) {
-        showStatus("Hasło musi mieć co najmniej 8 znaków.");
-        return null;
-      }
+    if (user) showApp();
+    else showAuth();
+  });
 
-      return { email, password };
+  supabaseClient.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      showMessage(friendlyError(error));
+      return;
     }
 
-    document.getElementById("signupBtn").addEventListener("click", async () => {
-      const credentials = await getCredentials();
-      if (!credentials) return;
+    user = data.session?.user || null;
 
-      showStatus("Tworzenie konta…");
+    if (user) showApp();
+    else showAuth();
+  });
+} else {
+  showAuth();
+}
 
-      const { data, error } = await supabaseClient.auth.signUp(credentials);
-
-      if (error) {
-        showStatus("Rejestracja nie powiodła się. Sprawdź ustawienia Supabase i spróbuj ponownie.");
-        return;
-      }
-
-      if (data.session) {
-        showStatus("Konto utworzone. Jesteś zalogowany.");
-      } else {
-        showStatus("Jeśli wymagane jest potwierdzenie e-maila, sprawdź swoją skrzynkę.");
-      }
-    });
-
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      const credentials = await getCredentials();
-      if (!credentials) return;
-
-      showStatus("Logowanie…");
-
-      const { error } = await supabaseClient.auth.signInWithPassword(credentials);
-
-      if (error) {
-        showStatus("Logowanie nie powiodło się. Sprawdź dane i potwierdzenie e-maila.");
-      } else {
-        showStatus("Zalogowano pomyślnie.");
-      }
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      if (!supabaseClient) return;
-
-      const { error } = await supabaseClient.auth.signOut();
-
-      document.getElementById("profileStatus").textContent =
-        error ? "Nie udało się wylogować. Spróbuj ponownie." : "Wylogowano.";
-    });
-  </script>
+switchMode("login");
+</script>
 </body>
 </html>
